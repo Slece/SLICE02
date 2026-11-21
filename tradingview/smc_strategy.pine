@@ -1,0 +1,32 @@
+//@version=5
+strategy("SMC H1/M15 Skeleton", overlay=true, pyramiding=0)
+
+rrRatio = input.float(2.5, "Reward/Risk", minval=0.1)
+requireChoCh = input.bool(true, "Exiger CHoCH")
+requireBos = input.bool(true, "Exiger BOS")
+useOB = input.bool(true, "Utiliser OB")
+useFVG = input.bool(true, "Utiliser FVG")
+useEngulfing = input.bool(true, "Engulfing")
+useRejection = input.bool(true, "Rejet")
+
+bullEngulfing = close > open and close[1] < open[1] and close > open[1] and open < close[1]
+bearEngulfing = close < open and close[1] > open[1] and close < open[1] and open > close[1]
+bullRejection = low < low[1] and close > open
+bearRejection = high > high[1] and close < open
+
+bullConfirm = (useEngulfing and bullEngulfing) or (useRejection and bullRejection)
+bearConfirm = (useEngulfing and bearEngulfing) or (useRejection and bearRejection)
+
+sessionLondonNy = not na(time(timeframe.period, "0800-1200:1234567")) or
+                  not na(time(timeframe.period, "1300-1700:1234567"))
+
+// Remplacer par les pivots H1 exacts, les cassures CHoCH/BOS
+// et les zones OB/FVG M15 documentées.
+bullTrend = false
+bearTrend = false
+
+if sessionLondonNy and not bullTrend and bullConfirm
+    plotshape(true, style=shape.triangleup, location=location.belowbar, color=color.green)
+
+if sessionLondonNy and not bearTrend and bearConfirm
+    plotshape(true, style=shape.triangledown, location=location.abovebar, color=color.red)

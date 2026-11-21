@@ -1,0 +1,11 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <variables>
+    <variable id="risk_percent">risk_percent</variable>
+    <variable id="max_trades">max_trades</variable>
+  </variables>
+  <block type="trade_definition" id="SMC_TEMPLATE">
+    <field name="MARKET">R_75</field>
+    <field name="TRADETYPE">CALL</field>
+    <field name="CANDLEINTERVAL">900</field>
+  </block>
+</xml>
